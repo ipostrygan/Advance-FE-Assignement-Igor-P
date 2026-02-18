@@ -1,13 +1,12 @@
 import { Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
+import { CreateAccountPayload } from '@/domain/Account';
+import useCreateAccount from '@/hooks/useCreateAccount';
+import { FormProps } from './types';
 
-interface CreateAccountFormProps {
-  onClose: () => void
-}
-
-const CreateAccountForm = ({ onClose }: CreateAccountFormProps) => {
-  const { control, handleSubmit, formState: { isDirty} } = useForm({
+const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
+  const { control, handleSubmit, formState: { isDirty } } = useForm({
     defaultValues: {
       name: "",
       bank_name: "",
@@ -15,13 +14,15 @@ const CreateAccountForm = ({ onClose }: CreateAccountFormProps) => {
       account_number: "",
     }
   })
+  const { mutateAsync, isLoading } = useCreateAccount()
 
-  const onSubmit = (data: any) => {
-    onClose()
+  const onSubmit = async (data: CreateAccountPayload) => {
+    await mutateAsync(data)
+    actionOnSubmit()
   }
 
   return (
-    <div> 
+    <div className='flex flex-col gap-4'> 
       <h2 className='text-2xl font-semibold'>Create Account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
         <Controller 
@@ -76,7 +77,7 @@ const CreateAccountForm = ({ onClose }: CreateAccountFormProps) => {
             />
           )}
         />
-        <Button type="submit" variant='contained' disabled={!isDirty}>Add account</Button>
+        <Button type="submit" variant='contained' disabled={!isDirty || isLoading}>Add account</Button>
       </form>
     </div>
   );

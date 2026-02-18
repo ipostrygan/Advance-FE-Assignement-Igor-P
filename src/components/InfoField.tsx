@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import FlexxIcon from '@components/FlexxIcon/FlexxIcon';
 import CopyIconButton from '@components/CopyIconButton/CopyIconButton';
@@ -29,6 +29,7 @@ interface InfoFieldProps {
     radius?: string | number;
     padding?: string | number;
   };
+  isAccountNumber?: boolean
 }
 
 const InfoField: React.FC<InfoFieldProps> = ({
@@ -48,6 +49,7 @@ const InfoField: React.FC<InfoFieldProps> = ({
   isCurrency = false,
   currencyProps = {},
   borderProps = {},
+  isAccountNumber = false
 }) => {
   const {
     enabled = false,

@@ -5,19 +5,17 @@ import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 import useFetchAccounts from '@/hooks/useFetchAccounts';
 import FlexxAutocomplete from '@/components/FlexxCustomTextInputs/FlexxAutocomplete';
 import { prepareSelectOptions } from '@/utils/prepareSelectOptions';
-import useMoveMoney, { MoveMoneyPayload } from '@/hooks/useMoveMoney';
+import useMoveMoney from '@/hooks/useMoveMoney';
+import { MoveMoneyPayload } from '@/domain/Transaction';
+import { FormProps } from './types';
 
-interface MoveMoneyFormProps {
-  actionOnSubmit: () => void
-}
-
-const MoveMoneyForm = ({ actionOnSubmit }: MoveMoneyFormProps) => {
+const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
   const [isConfirmed, setIsConfirmed] = useState(false)
   const [sourceAccountInput, setSourceAccountInput] = useState("")
   const [destinationAccountInput, setDestinationAccountInput] = useState("")
 
-  const { data: sourceAccountsRaw } = useFetchAccounts({searchQuery: sourceAccountInput});
-  const { data: destinationAccountsRaw } = useFetchAccounts({searchQuery: destinationAccountInput});
+  const { data: sourceAccountsRaw } = useFetchAccounts({ searchQuery: sourceAccountInput });
+  const { data: destinationAccountsRaw } = useFetchAccounts({ searchQuery: destinationAccountInput });
 
   const { control, handleSubmit, formState: { isDirty }, watch } = useForm({
     defaultValues: {
@@ -26,7 +24,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: MoveMoneyFormProps) => {
       amount: "",
     }
   })
-  const { mutateAsync } = useMoveMoney()
+  const { mutateAsync, isLoading } = useMoveMoney()
   const selectedSourceAccount = watch("source_account_id")
 
   const sourceAccounts = useMemo(() => 
@@ -43,12 +41,10 @@ const MoveMoneyForm = ({ actionOnSubmit }: MoveMoneyFormProps) => {
     actionOnSubmit()
   }
 
-  console.log(watch())
-
   const isReadyToSubmit = isDirty && isConfirmed
 
   return (
-    <div> 
+    <div className='flex flex-col gap-4'> 
       <h2 className='text-2xl font-semibold'>Move money</h2>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
         <Controller 
@@ -96,6 +92,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: MoveMoneyFormProps) => {
               placeholder='Enter amount'
               fullWidth
               required
+              size="small"
             />
           )}
         />
@@ -103,7 +100,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: MoveMoneyFormProps) => {
           control={<Checkbox onChange={(e) => setIsConfirmed(e.target.checked)} />}
           label="I confirm this transfer"
         />
-        <Button type="submit" variant='contained' disabled={!isReadyToSubmit}>Move Money</Button>
+        <Button type="submit" variant='contained' disabled={!isReadyToSubmit || isLoading}>Move Money</Button>
       </form>
     </div>
   );

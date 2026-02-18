@@ -7,3 +7,9 @@ export interface Transaction {
   merchant: string
   direction: 'debit' | 'credit'
 }
+
+export interface MoveMoneyPayload {
+  source_account_id: string;
+  destination_account_id: string;
+  amount: string | number;
+}

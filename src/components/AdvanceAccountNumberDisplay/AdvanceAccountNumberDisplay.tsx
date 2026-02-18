@@ -14,6 +14,7 @@ interface AdvanceAccountNumberDisplayProps {
   removeEyeIcon?: boolean;
   variant?: TypographyVariant;
   fontWeight?: TypographyProps['fontWeight'];
+  id?: string
 }
 
 const AdvanceAccountNumberDisplay: React.FC<
@@ -25,6 +26,7 @@ const AdvanceAccountNumberDisplay: React.FC<
   variant,
   removeEyeIcon,
   fontWeight,
+  id,
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
 
@@ -43,6 +45,7 @@ const AdvanceAccountNumberDisplay: React.FC<
           gap: '0.5rem',
           textWrap: 'nowrap',
         }}
+        id={id}
       >
         N/A
       </Typography>
@@ -58,6 +61,7 @@ const AdvanceAccountNumberDisplay: React.FC<
         alignItems: 'center',
         textWrap: 'nowrap',
       }}
+      id={id}
     >
       {isRevealed
         ? formatFullAccountNumber(accountNumber)

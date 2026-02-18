@@ -15,5 +15,12 @@ interface Account {
   balance: number;
 }
 
+export interface CreateAccountPayload {
+  name: string,
+  bank_name: string,
+  routing_number: string,
+  account_number: string,
+}
+
 export {AccountStatus};
 export type {Account};

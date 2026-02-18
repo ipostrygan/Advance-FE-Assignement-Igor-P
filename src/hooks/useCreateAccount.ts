@@ -1,19 +1,18 @@
 import { useMutation, useQueryClient } from 'react-query';
 
-import { Transaction } from '@/domain/Transaction';
 import { QueryClientIds } from '@/QueryClient/queryClient.ids';
 import flexxApiService from '@/flexxApi/flexxApiService';
 
-const useMoveMoney = () => {
+const useCreateAccount = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['move-money'],
-    mutationFn: flexxApiService().moveMoney,
+    mutationKey: ['create-account'],
+    mutationFn: flexxApiService().createAccount,
     onSuccess: () => {
-      queryClient.invalidateQueries([QueryClientIds.TRANSACTIONS]);
+      queryClient.invalidateQueries([QueryClientIds.ACCOUNTS]);
     },
   });
 };
 
-export default useMoveMoney;
+export default useCreateAccount;

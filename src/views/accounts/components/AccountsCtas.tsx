@@ -4,11 +4,11 @@ import {Stack} from '@mui/material';
 import AdvanceActionButtons from '@components/AdvanceActionButtons/AdvanceActionButtons';
 import {ActionButtonConfig} from '@components/AdvanceActionButtons/types';
 import {useCreateAccount} from '@/views/accounts/hooks/useCreateAccount';
-import { useMoveMoney } from '../hooks/useMoveMoney';
+import { useMoveMoneyDrawer } from '../hooks/useMoveMoneyDrawer';
 
 const AccountsCtas: React.FC = () => {
   const { openDrawer: openCreateAccountDrawer, Drawer: CreateAccountDrawer } = useCreateAccount();
-  const { openDrawer: openMoveMoneyDrawer, Drawer: MoveMoneyDrawer } = useMoveMoney()
+  const { openDrawer: openMoveMoneyDrawer, Drawer: MoveMoneyDrawer } = useMoveMoneyDrawer()
 
   const actions: ActionButtonConfig[] = [
     {
@@ -21,7 +21,7 @@ const AccountsCtas: React.FC = () => {
       name: 'Move Money',
       variant: 'outlined',
       onClick: openMoveMoneyDrawer,
-      startIcon: 'fluent--switch-20-regular',
+      startIcon: 'fluent--arrow-swap-20-regular',
     },
   ];
 
