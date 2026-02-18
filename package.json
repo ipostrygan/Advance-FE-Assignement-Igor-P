@@ -48,7 +48,7 @@
     "postcss": "8.4.33",
     "postcss-styled-syntax": "0.6.4",
     "postinstall-postinstall": "^2.1.0",
-    "prettier": "3.1.1",
+    "prettier": "3.8.1",
     "react": "^19.2.1",
     "react-colorful": "5.6.1",
     "react-datepicker": "4.25.0",
