@@ -3,11 +3,11 @@ import React from 'react';
 import {Stack} from '@mui/material';
 import AdvanceActionButtons from '@components/AdvanceActionButtons/AdvanceActionButtons';
 import {ActionButtonConfig} from '@components/AdvanceActionButtons/types';
-import {useCreateAccount} from '@/views/accounts/hooks/useCreateAccount';
 import { useMoveMoneyDrawer } from '../hooks/useMoveMoneyDrawer';
+import useCreateAccountDrawer from '../hooks/useCreateAccountDrawer';
 
 const AccountsCtas: React.FC = () => {
-  const { openDrawer: openCreateAccountDrawer, Drawer: CreateAccountDrawer } = useCreateAccount();
+  const { openDrawer: openCreateAccountDrawer, Drawer: CreateAccountDrawer } = useCreateAccountDrawer();
   const { openDrawer: openMoveMoneyDrawer, Drawer: MoveMoneyDrawer } = useMoveMoneyDrawer()
 
   const actions: ActionButtonConfig[] = [
