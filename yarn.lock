@@ -3845,12 +3845,12 @@ postcss-selector-parser@^6.0.10, postcss-selector-parser@^6.0.11, postcss-select
     cssesc "^3.0.0"
     util-deprecate "^1.0.2"
 
-postcss-styled-syntax@0.6.4:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/postcss-styled-syntax/-/postcss-styled-syntax-0.6.4.tgz#16c07d2c55261a435031b6a9c7f1d5c2daa2246c"
-  integrity sha512-uWiLn+9rKgIghUYmTHvXMR6MnyPULMe9Gv3bV537Fg4FH6CA6cn21WMjKss2Qb98LUhT847tKfnRGG3FhSOgUQ==
+postcss-styled-syntax@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/postcss-styled-syntax/-/postcss-styled-syntax-0.7.0.tgz#7ae2f5e9af36af3e81fc96f0e92c98d27b21be9d"
+  integrity sha512-OeStzPkHJ1/WDGRKm/JuVK8UdJbjt3U7AFC+zUc9omJ79SaXSxWoy+PXxJz7t8vOO8HcUgCLndNEQfLvZ74TuQ==
   dependencies:
-    typescript "^5.3.3"
+    typescript "^5.6.3"
 
 postcss-value-parser@^4.0.0, postcss-value-parser@^4.2.0:
   version "4.2.0"
@@ -4953,7 +4953,7 @@ typescript-eslint@^8.20.0:
     "@typescript-eslint/typescript-estree" "8.46.4"
     "@typescript-eslint/utils" "8.46.4"
 
-typescript@^5.3.3:
+typescript@^5.6.3:
   version "5.9.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
