@@ -7,6 +7,7 @@ import {
 
 export const useGlobalSearch = (): GlobalSearchContextValue => {
   const context = useContext(GlobalSearchContext);
+  console.log(context)
   if (!context) {
     throw new Error('useGlobalSearch must be used inside GlobalSearchProvider');
   }

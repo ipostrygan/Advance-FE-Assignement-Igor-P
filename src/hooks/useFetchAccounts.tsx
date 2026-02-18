@@ -8,9 +8,9 @@ interface useFetchAccountsArgs {
   searchQuery?: string;
 }
 
-const useFetchAccounts = (args?: useFetchAccountsArgs) => {
-  return useQuery<Account[]>([QueryClientIds.ACCOUNTS], () =>
-    flexxApiService().fetchAccounts({search_term: args?.searchQuery}),
+const useFetchAccounts = ({ searchQuery }: useFetchAccountsArgs) => {
+  return useQuery<Account[]>([QueryClientIds.ACCOUNTS, searchQuery], () =>
+    flexxApiService().fetchAccounts({search_term: searchQuery}),
   );
 };
 
