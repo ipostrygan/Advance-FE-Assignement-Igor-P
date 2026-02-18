@@ -1,16 +1,87 @@
 import React from 'react';
-import {Stack, Typography} from '@mui/material';
+import {Button, Stack, Typography} from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 
-const CreateAccountForm: React.FC = () => {
+interface CreateAccountFormProps {
+  onClose: () => void
+}
+
+const CreateAccountForm = ({ onClose }: CreateAccountFormProps) => {
+  const { control, handleSubmit, formState: { isDirty} } = useForm({
+    defaultValues: {
+      name: "",
+      bank_name: "",
+      routing_number: "",
+      account_number: "",
+    }
+  })
+
+  const onSubmit = (data: any) => {
+    onClose()
+  }
+
   return (
     <Stack
       flexGrow={1}
-      alignItems={'center'}
-      justifyContent={'center'}
       gap={'1rem'}
-    >
-      <Typography variant={'h3'}>Create Account Form</Typography>
-      <Typography variant={'body1'}>To be implemented with a form</Typography>
+    > 
+      <Typography variant="h2">Create Account</Typography>
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+        <Controller 
+          name="name" 
+          control={control} 
+          render={({ field }) => (
+            <FlexxTextField
+              {...field}
+              label='Account Name'
+              placeholder='Enter account name'
+              fullWidth
+              required
+            />
+          )}
+        />
+        <Controller 
+          name="bank_name" 
+          control={control} 
+          render={({ field }) => (
+            <FlexxTextField
+              {...field}
+              label='Bank Name'
+              placeholder='Enter bank name'
+              fullWidth
+              required
+            />
+          )}
+        />
+        <Controller 
+          name="routing_number" 
+          control={control} 
+          render={({ field }) => (
+            <FlexxTextField
+              {...field}
+              label='Routing Number'
+              placeholder='Enter routing number'
+              fullWidth
+              required
+            />
+          )}
+        />
+        <Controller 
+          name="account_number" 
+          control={control} 
+          render={({ field }) => (
+            <FlexxTextField
+              {...field}
+              label='Account Number'
+              placeholder='Enter account number'
+              fullWidth
+              required
+            />
+          )}
+        />
+        <Button type="submit" variant='contained' disabled={!isDirty}>Add account</Button>
+      </form>
     </Stack>
   );
 };

@@ -126,10 +126,10 @@ const Home = () => {
                 <ListItem key={name} disableGutters>
                   <ListItemText
                     primary={
-                      <Typography variant='body2'>
+                      <>
                         <Chip label={name} size='small' sx={{mr: 1}} />
                         {desc}
-                      </Typography>
+                      </>
                     }
                   />
                 </ListItem>

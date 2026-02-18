@@ -25,7 +25,7 @@ class FlexxApiService {
 
   async fetchAccounts(params: {search_term?: string}): Promise<Account[]> {
     const queryParams = this.formatQueryParams(params);
-    return get<Account[]>({endpoint: `pages/accounts?${queryParams}`});
+    return get<Account[]>({endpoint: `account?${queryParams}`});
   }
 }
 
