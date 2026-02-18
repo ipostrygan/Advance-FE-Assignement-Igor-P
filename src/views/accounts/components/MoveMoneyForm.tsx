@@ -3,25 +3,15 @@ import { Button, Checkbox, Divider, FormControlLabel } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 import FlexxAutocomplete from '@/components/FlexxCustomTextInputs/FlexxAutocomplete';
-import useAccount from '@/hooks/accounts/useAccount';
-import useFetchAccounts from '@/hooks/accounts/useFetchAccounts';
-import useMoveMoney from '@/hooks/useMoveMoney';
+import useAccount from '@/views/accounts/hooks/useAccount';
+import useFetchAccounts from '@/views/accounts/hooks/useFetchAccounts';
+import useMoveMoney from '@/views/accounts/hooks/useMoveMoney';
 import { prepareSelectOptions } from '@/utils/prepareSelectOptions';
 import { MoveMoneyPayload } from '@/domain/Transaction';
-import { FormProps } from './types';
-import { z } from 'zod';
+import { FormProps } from '../types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDebounce } from 'use-debounce';
-
-const MoveMoneyFormSchema = z.object({
-  source_account_id: z.string().min(1),
-  destination_account_id: z.string().min(1),
-  amount: z
-    .string()
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0),
-});
-
-type MoveMoneyFormType = z.infer<typeof MoveMoneyFormSchema>
+import { MoveMoneyFormSchema, type MoveMoneyFormType } from '../schemas/moveMoney.schema';
 
 interface MoveMoneyFormProps extends FormProps {
   selectedAccountId?: string

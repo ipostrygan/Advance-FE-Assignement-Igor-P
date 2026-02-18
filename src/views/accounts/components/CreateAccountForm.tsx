@@ -2,32 +2,10 @@ import { Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 import { CreateAccountPayload } from '@/domain/Account';
-import useCreateAccount from '@/hooks/accounts/useCreateAccount';
-import { FormProps } from './types';
-import { z } from 'zod'
-import { accountNumberRegex } from '@/components/FlexxCustomTextInputs/domain/FlexxTextFieldValidators';
-import { MAX_NAME_LENGTH } from '@/constants/fieldValidation';
+import useCreateAccount from '@/views/accounts/hooks/useCreateAccount';
+import { FormProps } from '../types';
 import { zodResolver } from "@hookform/resolvers/zod"
-
-const CreateAccountFormSchema = z.object({
-  name: z
-    .string()
-    .min(1)
-    .max(MAX_NAME_LENGTH),
-  bank_name: z
-    .string()
-    .min(1),
-  routing_number: z
-    .string()
-    .min(1)
-    .regex(accountNumberRegex),
-  account_number: z
-    .string()
-    .min(1)
-    .regex(accountNumberRegex)
-});
-
-type CreateAccountFormType = z.infer<typeof CreateAccountFormSchema>
+import { CreateAccountFormSchema, type CreateAccountFormType } from '../schemas/createAccount.schema';
 
 const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
   const { control, handleSubmit, formState: { isDirty, isValid } } = useForm<CreateAccountFormType>({

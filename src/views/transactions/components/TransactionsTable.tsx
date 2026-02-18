@@ -2,8 +2,8 @@
 
 import { FlexxTable } from '@components/FlexxTable/FlexxTable';
 import { useGlobalSearch } from '@core/hooks/useGlobalSearch';
-import useFetchTransactions from '@/hooks/useFetchTransactions';
-import useTransactionsTable from '../hooks/useTransactionsTable';
+import useFetchTransactions from '@/views/transactions/hooks/useFetchTransactions';
+import useTransactionsTable from '@/views/transactions/hooks/useTransactionsTable';
 
 interface TransactionsTableProps {
   accountId?: string

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import {FlexxTable} from '@components/FlexxTable/FlexxTable';
-import useFetchAccounts from '@/hooks/accounts/useFetchAccounts';
+import useFetchAccounts from '@/views/accounts/hooks/useFetchAccounts';
 import useAccountsDashboardTable from '@views/accounts/hooks/useAccountsDashboardTable';
 import {useGlobalSearch} from '@core/hooks/useGlobalSearch';
 import useAccountDetails from '../hooks/useAccountDetails';
