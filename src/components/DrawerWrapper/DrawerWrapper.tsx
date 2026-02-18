@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 
-export type drawerSizes = 'sm' | 'md' | 'lg' | 'xl' | 'half' | 'full';
+export type drawerSizes = 'sm' | 'md' | 'lg' | 'xl' | 'half' | 'full'
 export type expandedDrawerComponentSizes =
   | '30vw'
   | '40vw'
