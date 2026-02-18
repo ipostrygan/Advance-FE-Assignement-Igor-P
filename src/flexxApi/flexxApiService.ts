@@ -30,6 +30,10 @@ class FlexxApiService {
     return get<Account[]>({endpoint: `account?${queryParams}`});
   }
 
+  async fetchAccount(id: string): Promise<Account> {
+    return get<Account>({endpoint: `account/${id}`});
+  }
+
   async createAccount(body: CreateAccountPayload) {
     return post({endpoint: 'account', body});
   }

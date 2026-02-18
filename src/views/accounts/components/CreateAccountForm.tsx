@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 import { CreateAccountPayload } from '@/domain/Account';
-import useCreateAccount from '@/hooks/useCreateAccount';
+import useCreateAccount from '@/hooks/accounts/useCreateAccount';
 import { FormProps } from './types';
 import { z } from 'zod'
 import { accountNumberRegex } from '@/components/FlexxCustomTextInputs/domain/FlexxTextFieldValidators';

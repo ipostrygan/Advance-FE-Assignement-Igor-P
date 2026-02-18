@@ -65,7 +65,7 @@ const AccountDetails = ({ account, onFormVisible }: AccountDetailsProps) => {
                   icon='fluent--chevron-right-20-regular'
                 />
               </IconButton>
-        )}
+            )}
           </div>
           <p className="text-gray-400">{account.bank_name}</p>
           <div className="flex gap-4">
@@ -88,10 +88,15 @@ const AccountDetails = ({ account, onFormVisible }: AccountDetailsProps) => {
           <TransactionsTable accountId={account.account_id} />
         </div>
       </div>
-      <div className={classNames("flex flex-col gap-4 grow translate-x-full", {
-        "basis-1/4 translate-x-0": isMoveMoneyFormShown,
+      <div className={classNames("flex flex-col gap-4 grow translate-x-full transition-transform duration-500", {
+        "basis-1/4 !translate-x-0 min-w-[350px]": isMoveMoneyFormShown,
       })}>
-        <MoveMoneyForm actionOnSubmit={() => setIsMoveMoneyFormShown(false)} />
+        {isMoveMoneyFormShown && (
+          <MoveMoneyForm 
+            actionOnSubmit={() => setIsMoveMoneyFormShown(false)} 
+            selectedAccountId={account.account_id} 
+          />
+        )}
       </div>
     </div>
   )

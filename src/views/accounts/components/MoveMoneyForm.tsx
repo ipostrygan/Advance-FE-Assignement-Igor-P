@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Checkbox, Divider, FormControlLabel } from '@mui/material';
+import { Button, Checkbox, Divider, FormControlLabel, Skeleton } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
-import useFetchAccounts from '@/hooks/useFetchAccounts';
+import useFetchAccounts from '@/hooks/accounts/useFetchAccounts';
 import FlexxAutocomplete from '@/components/FlexxCustomTextInputs/FlexxAutocomplete';
 import { prepareSelectOptions } from '@/utils/prepareSelectOptions';
 import useMoveMoney from '@/hooks/useMoveMoney';
@@ -10,6 +10,7 @@ import { MoveMoneyPayload } from '@/domain/Transaction';
 import { FormProps } from './types';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import useAccount from '@/hooks/accounts/useAccount';
 
 const MoveMoneyFormSchema = z.object({
   source_account_id: z.string().min(1),
@@ -19,25 +20,31 @@ const MoveMoneyFormSchema = z.object({
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0),
 });
 
-type MoveMoneyFormFormType = z.infer<typeof MoveMoneyFormSchema>
+type MoveMoneyFormType = z.infer<typeof MoveMoneyFormSchema>
 
-const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
+interface MoveMoneyFormProps extends FormProps {
+  selectedAccountId?: string
+}
+
+const MoveMoneyForm = ({ actionOnSubmit, selectedAccountId }: MoveMoneyFormProps) => {
   const [isConfirmed, setIsConfirmed] = useState(false)
   const [sourceAccountInput, setSourceAccountInput] = useState<string | undefined>("")
   const [destinationAccountInput, setDestinationAccountInput] = useState<string | undefined>("")
-
-  const { data: sourceAccountsRaw } = useFetchAccounts({ searchQuery: sourceAccountInput });
+  const { mutateAsync, isLoading } = useMoveMoney()
+  
+  const { data: account } = useAccount(selectedAccountId)
+  const { data: sourceAccountsRaw } = useFetchAccounts({ searchQuery: sourceAccountInput, enabled: !selectedAccountId });
   const { data: destinationAccountsRaw } = useFetchAccounts({ searchQuery: destinationAccountInput });
 
-  const { control, handleSubmit, formState: { isDirty, isValid }, watch } = useForm({
+  const { control, handleSubmit, formState: { isDirty, isValid }, watch } = useForm<MoveMoneyFormType>({
     resolver: zodResolver(MoveMoneyFormSchema),
     defaultValues: {
-      source_account_id: "",
+      source_account_id: selectedAccountId || "",
       destination_account_id: "",
       amount: "",
     }
   })
-  const { mutateAsync, isLoading } = useMoveMoney()
+  
   const selectedSourceAccount = watch("source_account_id")
 
   const sourceAccounts = useMemo(() => 
@@ -60,23 +67,29 @@ const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
     <div className='flex flex-col gap-4'> 
       <h2 className='text-2xl font-semibold'>Move money</h2>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
-        <Controller 
-          name="source_account_id" 
-          control={control} 
-          render={({ field }) => (
-            <FlexxAutocomplete 
-              {...field} 
-              options={sourceAccounts} 
-              size="small"
-              label="Source account"
-              placeholder='Select source account'
-              error={null} 
-              onOptionChange={(_, option) => { if (option) { field.onChange(option.id) }}}
-              onInputChange={(_, value) => setSourceAccountInput(value)}
-              required  
+        {
+          selectedAccountId ? (
+            <FlexxTextField name="" value={account?.name || ""} disabled /> 
+          ) : (
+            <Controller 
+              name="source_account_id" 
+              control={control} 
+              render={({ field }) => (
+                <FlexxAutocomplete 
+                  {...field} 
+                  options={sourceAccounts} 
+                  size="small"
+                  label="Source account"
+                  placeholder='Select source account'
+                  error={null} 
+                  onOptionChange={(_, option) => { if (option) { field.onChange(option.id) }}}
+                  onInputChange={(_, value) => setSourceAccountInput(value)}
+                  required  
+                />
+              )}
             />
-          )}
-        />
+          )
+        }
         <Controller 
           name="destination_account_id" 
           control={control} 
@@ -114,7 +127,13 @@ const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
           control={<Checkbox onChange={(e) => setIsConfirmed(e.target.checked)} />}
           label="I confirm this transfer"
         />
-        <Button type="submit" variant='contained' disabled={!isReadyToSubmit || isLoading}>Move Money</Button>
+        <Button 
+          type="submit" 
+          variant='contained' 
+          disabled={!isReadyToSubmit || isLoading}
+        >
+          Move Money
+        </Button>
       </form>
     </div>
   );
