@@ -8,16 +8,29 @@ import { prepareSelectOptions } from '@/utils/prepareSelectOptions';
 import useMoveMoney from '@/hooks/useMoveMoney';
 import { MoveMoneyPayload } from '@/domain/Transaction';
 import { FormProps } from './types';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const MoveMoneyFormSchema = z.object({
+  source_account_id: z.string().min(1),
+  destination_account_id: z.string().min(1),
+  amount: z
+    .string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0),
+});
+
+type MoveMoneyFormFormType = z.infer<typeof MoveMoneyFormSchema>
 
 const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
   const [isConfirmed, setIsConfirmed] = useState(false)
-  const [sourceAccountInput, setSourceAccountInput] = useState("")
-  const [destinationAccountInput, setDestinationAccountInput] = useState("")
+  const [sourceAccountInput, setSourceAccountInput] = useState<string | undefined>("")
+  const [destinationAccountInput, setDestinationAccountInput] = useState<string | undefined>("")
 
   const { data: sourceAccountsRaw } = useFetchAccounts({ searchQuery: sourceAccountInput });
   const { data: destinationAccountsRaw } = useFetchAccounts({ searchQuery: destinationAccountInput });
 
-  const { control, handleSubmit, formState: { isDirty }, watch } = useForm({
+  const { control, handleSubmit, formState: { isDirty, isValid }, watch } = useForm({
+    resolver: zodResolver(MoveMoneyFormSchema),
     defaultValues: {
       source_account_id: "",
       destination_account_id: "",
@@ -41,7 +54,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
     actionOnSubmit()
   }
 
-  const isReadyToSubmit = isDirty && isConfirmed
+  const isReadyToSubmit = isDirty && isValid && isConfirmed
 
   return (
     <div className='flex flex-col gap-4'> 
@@ -59,7 +72,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
               placeholder='Select source account'
               error={null} 
               onOptionChange={(_, option) => { if (option) { field.onChange(option.id) }}}
-              onInputChange={(_, value) => { console.log(value); setSourceAccountInput(value || "")}}
+              onInputChange={(_, value) => setSourceAccountInput(value)}
               required  
             />
           )}
@@ -76,7 +89,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
               placeholder="Select destination account"
               error={null} 
               onOptionChange={(_, option) => { if (option) { field.onChange(option.id) }}}
-              onInputChange={(_, value) => setDestinationAccountInput(value || "")}
+              onInputChange={(_, value) => setDestinationAccountInput(value)}
               required  
             />
           )}
@@ -93,6 +106,7 @@ const MoveMoneyForm = ({ actionOnSubmit }: FormProps) => {
               fullWidth
               required
               size="small"
+              min={1}
             />
           )}
         />

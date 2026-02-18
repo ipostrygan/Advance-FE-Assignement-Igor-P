@@ -16,7 +16,6 @@ const AccountsDashboardTable: React.FC = () => {
   const { openDrawer, Drawer } = useAccountDetails(selectedAccount)
 
   const selectRow = (account: Account | undefined) => {
-    console.log("hih", account)
     setSelectedAccount(account)
     openDrawer()
   }

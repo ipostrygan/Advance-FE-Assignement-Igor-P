@@ -4,9 +4,34 @@ import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 import { CreateAccountPayload } from '@/domain/Account';
 import useCreateAccount from '@/hooks/useCreateAccount';
 import { FormProps } from './types';
+import { z } from 'zod'
+import { accountNumberRegex } from '@/components/FlexxCustomTextInputs/domain/FlexxTextFieldValidators';
+import { MAX_NAME_LENGTH } from '@/constants/fieldValidation';
+import { zodResolver } from "@hookform/resolvers/zod"
+
+const CreateAccountFormSchema = z.object({
+  name: z
+    .string()
+    .min(1)
+    .max(MAX_NAME_LENGTH),
+  bank_name: z
+    .string()
+    .min(1),
+  routing_number: z
+    .string()
+    .min(1)
+    .regex(accountNumberRegex),
+  account_number: z
+    .string()
+    .min(1)
+    .regex(accountNumberRegex)
+});
+
+type CreateAccountFormType = z.infer<typeof CreateAccountFormSchema>
 
 const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
-  const { control, handleSubmit, formState: { isDirty } } = useForm({
+  const { control, handleSubmit, formState: { isDirty, isValid } } = useForm<CreateAccountFormType>({
+    resolver: zodResolver(CreateAccountFormSchema),
     defaultValues: {
       name: "",
       bank_name: "",
@@ -28,13 +53,14 @@ const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
         <Controller 
           name="name" 
           control={control} 
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FlexxTextField
               {...field}
               label='Account Name'
               placeholder='Enter account name'
               fullWidth
               required
+              accountName
             />
           )}
         />
@@ -61,6 +87,7 @@ const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
               placeholder='Enter routing number'
               fullWidth
               required
+              routingNumber
             />
           )}
         />
@@ -74,10 +101,17 @@ const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
               placeholder='Enter account number'
               fullWidth
               required
+              routingNumber
             />
           )}
         />
-        <Button type="submit" variant='contained' disabled={!isDirty || isLoading}>Add account</Button>
+        <Button 
+          type="submit"
+          variant='contained' 
+          disabled={!isDirty || !isValid || isLoading}
+        >
+          Add account
+        </Button>
       </form>
     </div>
   );

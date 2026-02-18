@@ -9,7 +9,7 @@ import {
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
-const accountNumberRegex = /^(0[1-3]|1[0-2])\d{6}\d{1}$/;
+export const accountNumberRegex = /^(0[1-3]|1[0-2])\d{6}\d{1}$/;
 
 const isValidTextField = ({
   value,
