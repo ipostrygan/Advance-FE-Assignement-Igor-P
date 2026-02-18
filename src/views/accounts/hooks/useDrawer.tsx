@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import {useMemo, ReactNode} from 'react';
 
 import {useBoolean} from '@/hooks/useBoolean';
-import DrawerWrapper from '@components/DrawerWrapper/DrawerWrapper';
+import DrawerWrapper, { drawerSizes } from '@components/DrawerWrapper/DrawerWrapper';
 
 type UseDrawerRender = (close: () => void) => ReactNode;
 
-export const useDrawer = (renderContent: UseDrawerRender) => {
+export const useDrawer = (renderContent: UseDrawerRender, size: drawerSizes = 'md') => {
   const {
     value: isOpen,
     onTrue: openDrawer,
@@ -28,7 +28,7 @@ export const useDrawer = (renderContent: UseDrawerRender) => {
             onClick: closeDrawer,
           },
         ]}
-        drawerWidth='md'
+        drawerWidth={size}
       >
         {renderContent(closeDrawer)}
       </DrawerWrapper>,

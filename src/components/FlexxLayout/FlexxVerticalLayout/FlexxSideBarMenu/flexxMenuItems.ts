@@ -24,7 +24,7 @@ const AccountsMenuItem: FlexxMenuItem = {
 
 const TransactionsMenuItem: FlexxMenuItem = {
   id: FLEXX_MENU_ITEM_IDS.TRANSACTIONS,
-  icon: 'fluent--building-bank-16-regular',
+  icon: 'fluent--arrow-swap-20-regular',
   title: 'Transactions',
   href: '/transactions',
 };
