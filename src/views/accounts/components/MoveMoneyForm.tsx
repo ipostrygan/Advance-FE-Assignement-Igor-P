@@ -1,16 +1,17 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Checkbox, Divider, FormControlLabel, Skeleton } from '@mui/material';
+import { Button, Checkbox, Divider, FormControlLabel } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
-import useFetchAccounts from '@/hooks/accounts/useFetchAccounts';
 import FlexxAutocomplete from '@/components/FlexxCustomTextInputs/FlexxAutocomplete';
-import { prepareSelectOptions } from '@/utils/prepareSelectOptions';
+import useAccount from '@/hooks/accounts/useAccount';
+import useFetchAccounts from '@/hooks/accounts/useFetchAccounts';
 import useMoveMoney from '@/hooks/useMoveMoney';
+import { prepareSelectOptions } from '@/utils/prepareSelectOptions';
 import { MoveMoneyPayload } from '@/domain/Transaction';
 import { FormProps } from './types';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useAccount from '@/hooks/accounts/useAccount';
+import { useDebounce } from 'use-debounce';
 
 const MoveMoneyFormSchema = z.object({
   source_account_id: z.string().min(1),
@@ -31,10 +32,13 @@ const MoveMoneyForm = ({ actionOnSubmit, selectedAccountId }: MoveMoneyFormProps
   const [sourceAccountInput, setSourceAccountInput] = useState<string | undefined>("")
   const [destinationAccountInput, setDestinationAccountInput] = useState<string | undefined>("")
   const { mutateAsync, isLoading } = useMoveMoney()
-  
+
+  const [debouncedSourceAccount] = useDebounce(sourceAccountInput, 500)
+  const [debouncedDestinationAccount] = useDebounce(destinationAccountInput, 500)
+
   const { data: account } = useAccount(selectedAccountId)
-  const { data: sourceAccountsRaw } = useFetchAccounts({ searchQuery: sourceAccountInput, enabled: !selectedAccountId });
-  const { data: destinationAccountsRaw } = useFetchAccounts({ searchQuery: destinationAccountInput });
+  const { data: sourceAccountsRaw } = useFetchAccounts({ searchQuery: debouncedSourceAccount, enabled: !selectedAccountId });
+  const { data: destinationAccountsRaw } = useFetchAccounts({ searchQuery: debouncedDestinationAccount });
 
   const { control, handleSubmit, formState: { isDirty, isValid }, watch } = useForm<MoveMoneyFormType>({
     resolver: zodResolver(MoveMoneyFormSchema),
@@ -82,8 +86,14 @@ const MoveMoneyForm = ({ actionOnSubmit, selectedAccountId }: MoveMoneyFormProps
                   label="Source account"
                   placeholder='Select source account'
                   error={null} 
-                  onOptionChange={(_, option) => { if (option) { field.onChange(option.id) }}}
-                  onInputChange={(_, value) => setSourceAccountInput(value)}
+                  onOptionChange={(_, option) => { 
+                    field.onChange(option?.id || "") 
+                  }}
+                  onInputChange={(_, value, reason) => {
+                    if (reason === 'input') {
+                      setSourceAccountInput(value)
+                    }
+                  }}
                   required  
                 />
               )}
@@ -101,8 +111,14 @@ const MoveMoneyForm = ({ actionOnSubmit, selectedAccountId }: MoveMoneyFormProps
               label='Destination account'
               placeholder="Select destination account"
               error={null} 
-              onOptionChange={(_, option) => { if (option) { field.onChange(option.id) }}}
-              onInputChange={(_, value) => setDestinationAccountInput(value)}
+              onOptionChange={(_, option) => { 
+                field.onChange(option?.id || "") 
+              }}
+              onInputChange={(_, value, reason) => {
+                if (reason === 'input') {
+                  setDestinationAccountInput(value)
+                }
+              }}
               required  
             />
           )}

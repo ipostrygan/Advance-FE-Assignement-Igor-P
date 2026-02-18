@@ -45,6 +45,7 @@ interface FlexxTextFieldProps {
   onInputChange?: (
     event?: SyntheticEvent<Element, Event>,
     value?: string,
+    reason?: string
   ) => void;
   onOptionChange?: (
     event: React.SyntheticEvent,

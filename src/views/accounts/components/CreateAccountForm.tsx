@@ -53,7 +53,7 @@ const CreateAccountForm = ({ actionOnSubmit }: FormProps) => {
         <Controller 
           name="name" 
           control={control} 
-          render={({ field, fieldState }) => (
+          render={({ field }) => (
             <FlexxTextField
               {...field}
               label='Account Name'
