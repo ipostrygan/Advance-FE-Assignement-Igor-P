@@ -1,6 +1,7 @@
 import {get, post, put, remove} from '@/flexxApi/FlexxApiClientService';
 import {Account} from '@/domain/Account';
-import { Transaction } from '@/domain/Transaction';
+import {Transaction} from '@/domain/Transaction';
+import { MoveMoneyPayload } from '@/hooks/useMoveMoney';
 
 class FlexxApiService {
   private formatQueryParams(
@@ -29,7 +30,14 @@ class FlexxApiService {
     return get<Account[]>({endpoint: `account?${queryParams}`});
   }
 
-  async fetchTransactions(params: {search_term?: string}): Promise<Transaction[]> {
+  async moveMoney(body: MoveMoneyPayload): Promise<Transaction> {
+    return post<Transaction>({endpoint: 'move-money', body});
+  }
+
+  async fetchTransactions(params: {
+    account_id?: string;
+    search_term?: string;
+  }): Promise<Transaction[]> {
     const queryParams = this.formatQueryParams(params);
     return get<Transaction[]>({endpoint: `transaction?${queryParams}`});
   }

@@ -7,14 +7,14 @@ import {useCreateAccount} from '@/views/accounts/hooks/useCreateAccount';
 import { useMoveMoney } from '../hooks/useMoveMoney';
 
 const AccountsCtas: React.FC = () => {
-  const { openDrawer, CreateAccountDrawer} = useCreateAccount();
-  const { openDrawer: openMoveMoneyDrawer, MoveMoneyDrawer } = useMoveMoney()
+  const { openDrawer: openCreateAccountDrawer, Drawer: CreateAccountDrawer } = useCreateAccount();
+  const { openDrawer: openMoveMoneyDrawer, Drawer: MoveMoneyDrawer } = useMoveMoney()
 
   const actions: ActionButtonConfig[] = [
     {
       name: 'Add Account',
       variant: 'outlined',
-      onClick: openDrawer,
+      onClick: openCreateAccountDrawer,
       startIcon: 'fluent--add-circle-20-regular',
     },
     {

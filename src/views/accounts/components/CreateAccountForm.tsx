@@ -1,5 +1,4 @@
-import React from 'react';
-import {Button, Stack, Typography} from '@mui/material';
+import { Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import FlexxTextField from '@/components/FlexxCustomTextInputs/FlexxTextField';
 
@@ -22,11 +21,8 @@ const CreateAccountForm = ({ onClose }: CreateAccountFormProps) => {
   }
 
   return (
-    <Stack
-      flexGrow={1}
-      gap={'1rem'}
-    > 
-      <Typography variant="h2">Create Account</Typography>
+    <div> 
+      <h2 className='text-2xl font-semibold'>Create Account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
         <Controller 
           name="name" 
@@ -82,7 +78,7 @@ const CreateAccountForm = ({ onClose }: CreateAccountFormProps) => {
         />
         <Button type="submit" variant='contained' disabled={!isDirty}>Add account</Button>
       </form>
-    </Stack>
+    </div>
   );
 };
 

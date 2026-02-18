@@ -42,7 +42,7 @@ const FlexxAutocomplete = forwardRef<HTMLInputElement, FlexxAutocompleteProps>(
     const [error, setError] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
     const theme = useTheme();
-
+    console.log(value)
     const handleBlur = () => {
       const {isValid, message} = isValidTextField({
         value: options?.find(option => option.value === value)?.value ?? '',
@@ -86,7 +86,7 @@ const FlexxAutocomplete = forwardRef<HTMLInputElement, FlexxAutocompleteProps>(
         loading={optionsLoading}
         options={options ?? []}
         selectOnFocus
-        clearOnBlur
+        // clearOnBlur
         disablePortal={!enablePortal}
         clearOnEscape
         disableClearable={disableClearable}
