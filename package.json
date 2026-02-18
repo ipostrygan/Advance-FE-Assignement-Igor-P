@@ -94,7 +94,7 @@
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-path": "^1.4.0-beta.0",
     "eslint-plugin-perfectionist": "^4.10.1",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-unused-imports": "^4.1.4",
